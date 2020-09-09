@@ -24,12 +24,8 @@ const TaskInput = (props) => {
 
 	const [inputState, dispatch] = useReducer(inputReducer, {
 		value: "",
-	});
-
-	useEffect(() => {
-		props.onInput(inputShowing);
-	}, [props.onInput, inputShowing, props]);
-
+    });
+    
 	const toggleInputShowing = () => {
 		if (inputShowing) {
 			setInputShowing(false);
@@ -42,21 +38,21 @@ const TaskInput = (props) => {
         dispatch({type: "CHANGE", val:event.target.value});
     }
 
-	const handleInputSubmit = () => {
+	const handleInputSubmit = (event) => {
+        event.preventDefault();
         props.onInput(inputState);
         dispatch({type: "SUBMIT"});
 	};
 
 	return (
-		<form>
+		<form onSubmit={handleInputSubmit}>
 			{!inputShowing && (
 				<input type='button' value='Add' onClick={toggleInputShowing} />
 			)}
 			{inputShowing && <input onChange={changeHandler} value={inputState.value}/>}
 			{inputShowing && (
 				<input
-					type='button'
-					onClick={handleInputSubmit}
+					type='submit'
 					value='Submit'
 				/>
 			)}
