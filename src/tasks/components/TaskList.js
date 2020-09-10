@@ -5,7 +5,7 @@ import TaskItem from "./TaskItem";
 //import "./TaskList.css";
 
 const TaskList = (props) => {
-	let currentTaskNumber = 4;
+	const [numberOfTasks, setNumberOfTasks] = useState(4);
 
 	const [TASKS, setTasks] = useState([
 		{ taskId: 1, taskName: "Task1" },
@@ -14,16 +14,25 @@ const TaskList = (props) => {
 	]);
 
 	const handleTaskSubmit = (input) => {
+		setNumberOfTasks(numberOfTasks + 1);
 		console.log(input);
-		setTasks(TASKS.concat({ taskId: currentTaskNumber, taskName: input.value }));
+		setTasks(TASKS.concat({ taskId: numberOfTasks, taskName: input.value }));
+		console.log(numberOfTasks);
 	};
+
+	const handleTaskComplete = (taskIdToRemove) => {
+		console.log("task completed for task" + taskIdToRemove);
+		//const index = array.findIndex(p => p.taskId === taskIdToRemove);
+		setTasks(TASKS.filter(task => task.taskId !== taskIdToRemove ));
+		console.log(TASKS);
+	}
 
 	return (
 		<React.Fragment>
 			<TaskInput onInput={handleTaskSubmit} />
 			<ul>
 				{TASKS.map((task) => (
-					<TaskItem key={task.id} taskName={task.taskName} />
+					<TaskItem key={task.taskId} taskId={task.taskId} taskName={task.taskName} onComplete={handleTaskComplete}/>
 				))}
 			</ul>
 		</React.Fragment>
